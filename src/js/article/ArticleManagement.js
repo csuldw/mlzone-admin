@@ -1,6 +1,6 @@
 import util from '../../common/js/util'
 //import NProgress from 'nprogress'
-import {getArticleListByPage, removeUser, batchRemoveUser, editUser, addUser, getArticleInfoListByPage} from '../../api/api';
+import {getArticleListByPage, removeUser, batchRemoveUser, editUser, addUser, getArticleInfoListByPage, saveOrUpdateArticleInfo} from '../../api/api';
 import ElCol from "element-ui/packages/col/src/col";
 import ElRow from "element-ui/packages/row/src/row";
 
@@ -40,35 +40,23 @@ export default {
                 ]
             },
             //编辑界面数据
-            editForm: {
+            dataForm: {
                 id: 0,
-                name: '',
-                sex: -1,
-                age: 0,
-                birth: '',
-                addr: ''
+                title: '',
+                userId: -1,
+                categoryId: 0,
+                publicDate: '',
+                postType: '',
+                isPublish: 1
             },
 
             addFormVisible: false,//新增界面是否显示
             addLoading: false,
             addFormRules: {
-                name: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
-                ],
-                pass: [
-                    { required: true, message: '请输入密码', trigger: 'blur' }
+                title: [
+                    { required: true, message: '请输入文章标题', trigger: 'blur' }
                 ]
             },
-            //新增界面数据
-            addForm: {
-                name: '',
-                password: '',
-                sex: -1,
-                age: 0,
-                birth: '',
-                addr: '',
-
-            }
 
         }
     },
@@ -133,27 +121,29 @@ export default {
         //显示编辑界面
         handleEdit: function (index, row) {
             this.editFormVisible = true;
-            this.editForm = Object.assign({}, row);
+            this.dataForm = Object.assign({}, row);
         },
         //显示新增界面
         addArticle: function () {
             this.addFormVisible = true;
-            this.addForm = {
-                name: '',
-                sex: -1,
-                age: 0,
-                birth: '',
-                addr: ''
+            this.dataForm = {
+                id: 0,
+                title: 'qwe',
+                userId: 1,
+                categoryId: 0,
+                publicDate: '',
+                postType: '',
+                isPublish: 1
             };
         },
         //编辑
         editSubmit: function () {
-            this.$refs.editForm.validate((valid) => {
+            this.$refs.dataForm.validate((valid) => {
                 if (valid) {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         this.editLoading = true;
                         //NProgress.start();
-                        let para = Object.assign({}, this.editForm);
+                        let para = Object.assign({}, this.dataForm);
                         para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
                         editUser(para).then((res) => {
                             this.editLoading = false;
@@ -162,7 +152,7 @@ export default {
                                 message: '提交成功',
                                 type: 'success'
                             });
-                            this.$refs['editForm'].resetFields();
+                            this.$refs['dataForm'].resetFields();
                             this.editFormVisible = false;
                             this.getArticleInfos();
                         });
@@ -170,6 +160,32 @@ export default {
                 }
             });
         },
+        //新增
+        saveOrUpdate: function () {
+            this.$refs.dataForm.validate((valid) => {
+                if (valid) {
+                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                        this.addLoading = true;
+                        this.dataForm = Object.assign({}, this.dataForm);
+                        let para = this.dataForm;
+                        console.log(para);
+                        saveOrUpdateArticleInfo(para).then((res) => {
+                            this.addLoading = false;
+                            this.$message({
+                                message: '提交成功',
+                                type: 'success'
+                            });
+                            this.$refs['dataForm'].resetFields();
+                            this.addFormVisible = false;
+                            this.getArticleInfos();
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    });
+                }
+            });
+        },
+
         //新增
         addSubmit: function () {
             this.$refs.addForm.validate((valid) => {

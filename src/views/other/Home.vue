@@ -199,7 +199,7 @@
 				.content-wrapper {
 					background-color: #fff;
 					box-sizing: border-box;
-					width:1025px !important;
+					/*width:1025px !important;*/
 				}
 			}
 		}

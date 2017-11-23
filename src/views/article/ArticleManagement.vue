@@ -42,18 +42,18 @@
 
     <!--新增界面-->
     <el-dialog title="添加文章" v-model="addFormVisible" :close-on-click-modal="false" class="el-dialog-add-article">
-      <el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm" style="text-align:center;">
+      <el-form :model="dataForm" label-width="100px" :rules="addFormRules" ref="dataForm" style="text-align:center;">
         <el-row >
           <el-col span="22">
-            <el-form-item label="标题：" prop="name">
-              <el-input  v-model="addForm.name" auto-complete="off" >111</el-input>
+            <el-form-item label="标题：" prop="title">
+              <el-input  v-model="dataForm.title" auto-complete="on" ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col span="11">
-            <el-form-item label="作者：" prop="pass">
-              <el-input  v-model="addForm.password" auto-complete="off" >111</el-input>
+            <el-form-item label="作者：">
+              <el-input  v-model="dataForm.userId" auto-complete="off" ></el-input>
             </el-form-item>
           </el-col>
           <el-col span="11">
@@ -71,14 +71,11 @@
                       class="upload-demo"
                       ref="upload"
                       action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handleEdit"
-                      :on-remove="handleEdit"
                       :limit="1"
                       :clearFiles="true"
-                      :file-list="handleEdit"
                       :auto-upload="false">
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="handleEdit">上传到服务器</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="addSubmit">上传到服务器</el-button>
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
               </el-upload>
             </el-form-item>
@@ -87,31 +84,31 @@
         <el-row >
           <el-col span="18">
             <el-form-item label="关键字" prop="phone">
-              <el-input  v-model="addForm.name" auto-complete="off" >111</el-input>
+              <el-input  v-model="dataForm.userId" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align: center">
-        <el-button type="primary" @click.native="addSubmit" :loading="addLoading">&nbsp;提交发表&nbsp;</el-button>
+        <el-button type="primary" @click.native="saveOrUpdate" :loading="addLoading">&nbsp;提交发表&nbsp;</el-button>
         <el-button @click.native="addFormVisible = false"> &nbsp;取消操作&nbsp;</el-button>
       </div>
     </el-dialog>
 
     <!--编辑界面-->
     <el-dialog title="修改文章信息" v-model="editFormVisible" :close-on-click-modal="false" class="el-dialog-add-article">
-      <el-form :model="editForm" label-width="100px" :rules="editFormRules" ref="editForm">
+      <el-form :model="dataForm" label-width="100px" :rules="editFormRules" ref="dataForm">
         <el-row >
           <el-col span="22">
             <el-form-item label="标题：" prop="name">
-              <el-input  v-model="editForm.name" auto-complete="off" >111</el-input>
+              <el-input  v-model="dataForm.title" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col span="11">
             <el-form-item label="作者：" prop="pass">
-              <el-input  v-model="editForm.name" auto-complete="off" >111</el-input>
+              <el-input  v-model="dataForm.userId" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
           <el-col span="11">
@@ -125,7 +122,7 @@
         <el-row >
           <el-col span="11">
             <el-form-item label="发表日期：" prop="phone">
-              <el-input  v-model="editForm.birth" auto-complete="off" >111</el-input>
+              <el-input  v-model="dataForm.publicDate" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -136,14 +133,11 @@
                       class="upload-demo"
                       ref="upload"
                       action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handleEdit"
-                      :on-remove="handleEdit"
                       :limit="1"
                       :clearFiles="true"
-                      :file-list="handleEdit"
                       :auto-upload="false">
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="handleEdit">上传到服务器</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="editSubmit">上传到服务器</el-button>
                 <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
               </el-upload>
             </el-form-item>
@@ -152,7 +146,7 @@
         <el-row >
           <el-col span="22">
             <el-form-item label="关键字：" prop="phone">
-              <el-input  v-model="editForm.age" auto-complete="off" >111</el-input>
+              <el-input  v-model="dataForm.age" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -160,7 +154,7 @@
         <el-row >
           <el-col span="11">
             <el-form-item label="发表类型：">
-              <el-radio-group v-model="editForm.sex">
+              <el-radio-group v-model="dataForm.sex">
                 <el-radio class="radio" :label="1">原创</el-radio>
                 <el-radio class="radio" :label="0">转载</el-radio>
               </el-radio-group>
@@ -168,7 +162,7 @@
           </el-col>
           <el-col span="11">
             <el-form-item label="是否发表：">
-              <el-radio-group v-model="editForm.aa">
+              <el-radio-group v-model="dataForm.aa">
                 <el-radio class="radio" :label="1">是</el-radio>
                 <el-radio class="radio" :label="0">否</el-radio>
               </el-radio-group>
