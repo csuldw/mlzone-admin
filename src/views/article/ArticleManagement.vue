@@ -20,8 +20,8 @@
       <!--<el-table-column type="selection" width="55"></el-table-column>-->
       <el-table-column type="index" width="60"></el-table-column>
       <el-table-column prop="title" label="标题" width="140" sortable></el-table-column>
-      <el-table-column prop="userId" label="作者" width="120" sortable></el-table-column>
-      <el-table-column prop="categoryId" label="文章类别" width="120" sortable></el-table-column>
+      <el-table-column prop="userEntity.nickname" label="作者" width="120" sortable></el-table-column>
+      <el-table-column prop="articleCategoryEntity.categoryName" label="文章类别" width="120" sortable></el-table-column>
       <el-table-column prop="publicDate" label="发表日期" width="120" sortable></el-table-column>
       <el-table-column prop="postType" label="发表类型" min-width="120" sortable></el-table-column>
       <el-table-column prop="isPublish" label="是否发表" min-width="120" sortable></el-table-column>
@@ -42,7 +42,7 @@
 
     <!--新增界面-->
     <el-dialog title="添加文章" v-model="addFormVisible" :close-on-click-modal="false" class="el-dialog-add-article">
-      <el-form :model="dataForm" label-width="100px" :rules="addFormRules" ref="dataForm" style="text-align:center;">
+      <el-form :model="dataForm" label-width="100px" :rules="dataFormRules" ref="dataForm" style="text-align:center;">
         <el-row >
           <el-col span="22">
             <el-form-item label="标题：" prop="title">
@@ -53,7 +53,7 @@
         <el-row>
           <el-col span="11">
             <el-form-item label="作者：">
-              <el-input  v-model="dataForm.userId" auto-complete="off" ></el-input>
+              <el-input  v-model="dataForm.author" auto-complete="off" ></el-input>
             </el-form-item>
           </el-col>
           <el-col span="11">
@@ -97,10 +97,10 @@
 
     <!--编辑界面-->
     <el-dialog title="修改文章信息" v-model="editFormVisible" :close-on-click-modal="false" class="el-dialog-add-article">
-      <el-form :model="dataForm" label-width="100px" :rules="editFormRules" ref="dataForm">
+      <el-form :model="dataForm" label-width="100px" :rules="dataFormRules" ref="dataForm">
         <el-row >
           <el-col span="22">
-            <el-form-item label="标题：" prop="name">
+            <el-form-item label="标题：" prop="title">
               <el-input  v-model="dataForm.title" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
@@ -108,7 +108,7 @@
         <el-row>
           <el-col span="11">
             <el-form-item label="作者：" prop="pass">
-              <el-input  v-model="dataForm.userId" auto-complete="off" >111</el-input>
+              <el-input  v-model="dataForm.author" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
           <el-col span="11">
@@ -172,7 +172,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="editFormVisible = false">取消</el-button>
-        <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        <el-button type="primary" @click.native="saveOrUpdate" :loading="editLoading">提交</el-button>
       </div>
     </el-dialog>
 
@@ -190,7 +190,7 @@
     left:0;
     bottom:0;
     margin:auto;
-    width: 1300px;
+    width: 1600px;
   }
   .dialog-footer{
     margin-top:-30px;

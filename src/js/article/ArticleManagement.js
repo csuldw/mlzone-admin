@@ -43,6 +43,7 @@ export default {
             dataForm: {
                 id: 0,
                 title: '',
+                author: 'zola',
                 userId: -1,
                 categoryId: 0,
                 publicDate: '',
@@ -52,7 +53,7 @@ export default {
 
             addFormVisible: false,//新增界面是否显示
             addLoading: false,
-            addFormRules: {
+            dataFormRules: {
                 title: [
                     { required: true, message: '请输入文章标题', trigger: 'blur' }
                 ]
@@ -129,6 +130,7 @@ export default {
             this.dataForm = {
                 id: 0,
                 title: 'qwe',
+                author: 'zola',
                 userId: 1,
                 categoryId: 0,
                 publicDate: '',
