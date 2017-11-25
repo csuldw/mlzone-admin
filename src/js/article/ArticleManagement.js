@@ -1,18 +1,31 @@
 import util from '../../common/js/util'
 //import NProgress from 'nprogress'
-import {getArticleListByPage, removeUser, batchRemoveUser, editUser, addUser, getArticleInfoListByPage, saveOrUpdateArticleInfo} from '../../api/api';
+import {getArticleListByPage, removeUser, deleteArticleInfoById, batchRemoveUser, editUser, addUser, getArticleInfoListByPage, saveOrUpdateArticleInfo} from '../../api/api';
 import ElCol from "element-ui/packages/col/src/col";
 import ElRow from "element-ui/packages/row/src/row";
 
 export default {
     components: {
         ElRow,
-        ElCol},
+        ElCol
+    },
     data() {
         return {
             filters : {
                 pageNum: 1,
                 pageSize: 0
+            },
+            //数据
+            dataForm: {
+                id: 0,
+                title: '',
+                author: '',
+                userId: 0,
+                categoryId: 0,
+                publicDate: '',
+                postType: '',
+                isPublish: 1,
+                userEntity: { }
             },
             articleList: [],
             total: 0,
@@ -21,6 +34,17 @@ export default {
             sels: [],//列表选中列
             postType: '原创',
             articleType:'深度学习',
+            editFormVisible: false,//编辑界面是否显示
+            editLoading: false,
+            addFormVisible: false,//新增界面是否显示
+            addLoading: false,
+            dataFormRules: {
+                title: [
+                    { required: true, message: '请输入文章标题', trigger: 'blur' }
+                ]
+            },
+            uploadParams: {
+            },
             articleTypeList: [{
                 value: 'typ1',
                 label: '机器学习'
@@ -31,41 +55,9 @@ export default {
                 value: 'type3',
                 label: '深度学习'
             }],
-
-            editFormVisible: false,//编辑界面是否显示
-            editLoading: false,
-            editFormRules: {
-                name: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
-                ]
-            },
-            //编辑界面数据
-            dataForm: {
-                id: 0,
-                title: '',
-                author: 'zola',
-                userId: -1,
-                categoryId: 0,
-                publicDate: '',
-                postType: '',
-                isPublish: 1
-            },
-
-            addFormVisible: false,//新增界面是否显示
-            addLoading: false,
-            dataFormRules: {
-                title: [
-                    { required: true, message: '请输入文章标题', trigger: 'blur' }
-                ]
-            },
-
         }
     },
     methods: {
-        //性别显示转换
-        formatSex: function (row, column) {
-            return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
-        },
         handleCurrentChange(val) {
             this.page = val;
             this.getArticleInfos();
@@ -83,21 +75,6 @@ export default {
             });
         },
 
-        //获取用户列表
-        // getUsers() {
-        //     let para = {
-        //         page: this.page,
-        //         name: this.filters.name
-        //     };
-        //     this.listLoading = true;
-        //     //NProgress.start();
-        //     getUserListPage(para).then((res) => {
-        //         this.total = res.data.total;
-        //         this.users = res.data.users;
-        //         this.listLoading = false;
-        //         //NProgress.done();
-        //     });
-        // },
         //删除
         handleDel: function (index, row) {
             this.$confirm('确认删除该记录吗?', '提示', {
@@ -106,7 +83,7 @@ export default {
                 this.listLoading = true;
                 //NProgress.start();
                 let para = { id: row.id };
-                removeUser(para).then((res) => {
+                deleteArticleInfoById(para).then((res) => {
                     this.listLoading = false;
                     //NProgress.done();
                     this.$message({
@@ -124,45 +101,55 @@ export default {
             this.editFormVisible = true;
             this.dataForm = Object.assign({}, row);
         },
+        handleSendBefore(file) {
+            var _thisTemp = this;
+            // var index = _thisTemp.curUploadIndex;
+            var flag = true;
+            //限制文件大小
+            if (file.size > 104857600) {
+                this.$message.error("请上传小于100M的文件");
+                return false;
+            }
+            console.log("start upload!");
+            //文件上传去重
+            // _thisTemp.paramsData[index].uploadFiles.forEach(function (value, index) {
+            //     var fileArray = value.split('/-/');
+            //     var fileItem = {
+            //         type: fileArray[0],
+            //         fileName: fileArray[1],
+            //         fileType: fileArray[2],
+            //         fileSize: fileArray[3],
+            //     };
+            //     if (fileItem.fileName == file.name && fileItem.fileSize == file.size) {
+            //         flag = false;
+            //         return;
+            //     }
+            // })
+            if (!flag) {
+                return false;
+            }
+        },
+        uploadSuccess (response, file, fileList) {
+            console.log('上传文件', response)
+        },
+        // 上传错误
+        uploadError (response, file, fileList) {
+            console.log('上传失败，请重试！', file.name)
+        },
+
         //显示新增界面
         addArticle: function () {
             this.addFormVisible = true;
             this.dataForm = {
                 id: 0,
-                title: 'qwe',
-                author: 'zola',
-                userId: 1,
+                title: '',
+                author: '',
                 categoryId: 0,
                 publicDate: '',
-                postType: '',
+                postType: 0,
                 isPublish: 1
             };
         },
-        //编辑
-        editSubmit: function () {
-            this.$refs.dataForm.validate((valid) => {
-                if (valid) {
-                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                        this.editLoading = true;
-                        //NProgress.start();
-                        let para = Object.assign({}, this.dataForm);
-                        para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-                        editUser(para).then((res) => {
-                            this.editLoading = false;
-                            //NProgress.done();
-                            this.$message({
-                                message: '提交成功',
-                                type: 'success'
-                            });
-                            this.$refs['dataForm'].resetFields();
-                            this.editFormVisible = false;
-                            this.getArticleInfos();
-                        });
-                    });
-                }
-            });
-        },
-        //新增
         saveOrUpdate: function () {
             this.$refs.dataForm.validate((valid) => {
                 if (valid) {
@@ -170,7 +157,6 @@ export default {
                         this.addLoading = true;
                         this.dataForm = Object.assign({}, this.dataForm);
                         let para = this.dataForm;
-                        console.log(para);
                         saveOrUpdateArticleInfo(para).then((res) => {
                             this.addLoading = false;
                             this.$message({
@@ -179,6 +165,7 @@ export default {
                             });
                             this.$refs['dataForm'].resetFields();
                             this.addFormVisible = false;
+                            this.editFormVisible = false;
                             this.getArticleInfos();
                         }).catch(function (error) {
                             console.log(error);
@@ -188,55 +175,9 @@ export default {
             });
         },
 
-        //新增
-        addSubmit: function () {
-            this.$refs.addForm.validate((valid) => {
-                if (valid) {
-                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                        this.addLoading = true;
-                        //NProgress.start();
-                        let para = Object.assign({}, this.addForm);
-                        para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-                        addUser(para).then((res) => {
-                            this.addLoading = false;
-                            //NProgress.done();
-                            this.$message({
-                                message: '提交成功',
-                                type: 'success'
-                            });
-                            this.$refs['addForm'].resetFields();
-                            this.addFormVisible = false;
-                            this.getArticleInfos();
-                        });
-                    });
-                }
-            });
-        },
         selsChange: function (sels) {
             this.sels = sels;
         },
-        //批量删除
-        batchRemove: function () {
-            var ids = this.sels.map(item => item.id).toString();
-            this.$confirm('确认删除选中记录吗？', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.listLoading = true;
-                //NProgress.start();
-                let para = { ids: ids };
-                batchRemoveUser(para).then((res) => {
-                    this.listLoading = false;
-                    //NProgress.done();
-                    this.$message({
-                        message: '删除成功',
-                        type: 'success'
-                    });
-                    this.getArticleInfos();
-                });
-            }).catch(() => {
-
-            });
-        }
     },
     mounted() {
         this.getArticleInfos();

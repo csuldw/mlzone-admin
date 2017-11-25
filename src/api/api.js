@@ -2,21 +2,34 @@ import axios from 'axios';
 import qs from 'qs';
 
 let base = '';
-
 let headers = {
 //     "Content-Type":"multipart/form-data"
-'content-type': 'application/x-www-form-urlencoded'
+    'content-type': 'application/x-www-form-urlencoded'
+};
+
+let headers2 = {
+//     "Content-Type":"multipart/form-data"
+    'content-type': 'application/json'
 };
 //
 var instance = axios.create({
     headers: headers
 });
 
+var instance2 = axios.create({
+    headers: headers2
+});
+
 // article-ref
 
 export const getArticleListByPage = params => { return instance.post(`/api/MLZone/articleInfo/getArticelInfoList.do`, qs.stringify(params)).then(res => res.data); };
 
-export const saveOrUpdateArticleInfo = params => { return instance.post(`/api/MLZone/articleInfo/saveOrUpdateArticleInfo.do`, qs.stringify(params)).then(res => res.data); };
+// export const saveOrUpdateArticleInfo = params => { return instance.post(`/api/MLZone/articleInfo/saveOrUpdateArticleInfo.do`, qs.stringify(params)).then(res => res.data); };
+
+export const deleteArticleInfoById = params => { return instance.post(`/api/MLZone/articleInfo/deleteArticleInfoById.do`, qs.stringify(params)).then(res => res.data); };
+
+
+export const saveOrUpdateArticleInfo = params => { return instance2.post(`/api/MLZone/articleInfo/saveOrUpdateArticleInfo.do`, JSON.stringify(params)).then(res => res.data); };
 
 // export const saveOrUpdateBugInfo = params => { return axios.post(`/api/ProjectPlugin/bug/saveOrUpdateBugInfo.do`, qs.stringify(params)).then(res => res.data); };
 
@@ -25,10 +38,6 @@ export const saveOrUpdateArticleInfo = params => { return instance.post(`/api/ML
 // export const exportBugInfoToExcel = params => { return axios.post(`/api/ProjectPlugin/bug/exportBugInfoToExcel.do`, qs.stringify(params)).then(res => res.data); };
 
 // export const downloadBugInfoFile = params => { return instance.get(`/api/ProjectPlugin/file/bug/downloadFile.do`, { params: params }); };
-
-
-
-
 
 //user-ref
 
