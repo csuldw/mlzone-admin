@@ -1,10 +1,10 @@
 <template>
   <section>
     <!--工具条-->
-    <el-col span=24 class="toolbar" style="padding-bottom: 0px;">
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.keywords" placeholder="关键字"></el-input>
+          <el-input v-model="filters.keywords" placeholder="关键字" @keyup.enter.native="getArticleInfos"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" v-on:click="getArticleInfos">查询</el-button>
@@ -44,7 +44,7 @@
     </el-table>
 
     <!--工具条-->
-    <el-col :span=24 class="toolbar">
+    <el-col :span="24" class="toolbar">
       <!--<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>-->
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;"></el-pagination>
     </el-col>
@@ -53,23 +53,23 @@
     <el-dialog title="添加文章" v-model="addFormVisible" :close-on-click-modal="false" class="el-dialog-add-article">
       <el-form :model="dataForm" label-width="100px" :rules="dataFormRules" ref="dataForm" style="text-align:center;">
         <el-row >
-          <el-col span=22>
+          <el-col :span="22">
             <el-form-item label="标题：" prop="title">
               <el-input  v-model="dataForm.title" auto-complete="on" ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col span=8>
+          <el-col :span="8">
             <el-form-item label="文章类别：">
               <el-select v-model="articleType" placeholder="请选择文章类别">
-                <el-option v-for="(item, ids) in articleTypeList" :key="ids" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="item in articleTypeList" :key="item.id" :label="item.categoryName" :value="item.categoryName"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row >
-          <el-col span=18 align="left">
+          <el-col :span="18" align="left">
             <el-form-item label="上传文章：">
               <el-upload class="upload-demo"
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
@@ -77,24 +77,24 @@
                          :onError="uploadError"
                          :data="uploadParams"
                          :limit=1
-                         ref="uploadFiles"
+                         ref="uploades"
                          :before-upload="handleSendBefore"
                          :show-upload-list="false">
-                <el-button size="small" type="primary" @click="saveOrUpdate">文件上传</el-button>
-                <span class="el-upload__tip" slot="tip" style="margin-left:10px;">请上传MD格式内容的文件.</span>
+                <el-button size="small" type="primary">文件上传</el-button>
+                <span class="el-upFilload__tip" slot="tip" style="margin-left:10px;">请上传MD格式内容的文件.</span>
               </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row >
-          <el-col span=18>
+          <el-col :span="18">
             <el-form-item label="关键字：" prop="phone">
               <el-input  v-model="dataForm.userId" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row >
-          <el-col span=11>
+          <el-col :span="11">
             <el-form-item label="作者：">
               <el-input  v-model="dataForm.author" auto-complete="off" ></el-input>
             </el-form-item>
@@ -111,23 +111,23 @@
     <el-dialog title="修改文章信息" v-model="editFormVisible" :close-on-click-modal="false" class="el-dialog-add-article">
       <el-form :model="dataForm" label-width="100px" :rules="dataFormRules" ref="dataForm">
         <el-row >
-          <el-col span=22>
+          <el-col :span="22">
             <el-form-item label="标题：" prop="title">
               <el-input  v-model="dataForm.title" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col span=8>
+          <el-col :span="8">
             <el-form-item label="文章类别：">
-              <el-select v-model="articleType" placeholder="请选择文章类别">
-                <el-option v-for="(item, ids) in articleTypeList" :key="ids" :label="item.label" :value="item.value"></el-option>
+              <el-select v-model="dataForm.categoryId" placeholder="请选择文章类别">
+                <el-option v-for="item in articleTypeList" :key="item.id" :label="item.categoryName" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row >
-          <el-col span=18 align="left">
+          <el-col :span="18" align="left">
             <el-form-item label="上传文章：">
               <el-upload class="upload-demo"
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
@@ -137,29 +137,29 @@
                          :limit=1
                          ref="uploadFiles"
                          :before-upload="handleSendBefore"
-                         :show-upload-list="false">
-                <el-button size="small" type="primary" @click="saveOrUpdate">文件上传</el-button>
+                         :show-upload-list="true">
+                <el-button size="small" type="primary" >文件上传</el-button>
                 <span class="el-upload__tip" slot="tip" style="margin-left:10px;">请上传MD格式内容的文件.</span>
               </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row >
-          <el-col span=22>
+          <el-col :span="22">
             <el-form-item label="关键字：">
               <el-input  v-model="dataForm.keywords" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col span=11>
+          <el-col :span="11">
             <el-form-item label="作者：">
               <el-input  v-model="dataForm.author" auto-complete="off" >111</el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row >
-          <el-col span=11>
+          <el-col :span="11">
             <el-form-item label="发表类型：">
               <el-radio-group v-model="dataForm.postType">
                 <el-radio class="radio" :label="0">原创</el-radio>
@@ -168,13 +168,13 @@
             </el-form-item>
           </el-col>
           <!--<el-row >-->
-            <!--<el-col span="11">-->
+            <!--<el-col :span="11">-->
               <!--<el-form-item label="发表日期：" >-->
                 <!--<el-input  v-model="dataForm.publicDate" auto-complete="off" >111</el-input>-->
               <!--</el-form-item>-->
             <!--</el-col>-->
           <!--</el-row>-->
-          <el-col span=11>
+          <el-col :span="11">
             <el-form-item label="是否发表：">
               <el-radio-group v-model="dataForm.isPublish">
                 <el-radio class="radio" :label="1">是</el-radio>

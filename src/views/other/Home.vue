@@ -1,15 +1,15 @@
 <template>
 	<el-row class="container">
-		<el-col span=24 class="header">
-			<el-col span=10 class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
+		<el-col :span="24" class="header">
+			<el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
 				{{collapsed?'':sysName}}
 			</el-col>
-			<el-col span=10>
+			<el-col :span="10">
 				<div class="tools" @click.prevent="collapse">
 					<i class="fa fa-align-justify"></i>
 				</div>
 			</el-col>
-			<el-col span=4 class="userinfo">
+			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
@@ -20,7 +20,7 @@
 				</el-dropdown>
 			</el-col>
 		</el-col>
-		<el-col span=24 class="main">
+		<el-col :span="24" class="main">
 			<aside :class="collapsed?'menu-collapsed':'menu-expanded'">
 				<!--导航菜单-->
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
@@ -52,7 +52,7 @@
 			</aside>
 			<section class="content-container">
 				<div class="grid-content bg-purple-light">
-					<el-col span=24 class="breadcrumb-container">
+					<el-col :span="24" class="breadcrumb-container">
 						<strong class="title">{{$route.name}}</strong>
 						<el-breadcrumb separator="/" class="breadcrumb-inner">
 							<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
@@ -60,7 +60,7 @@
 							</el-breadcrumb-item>
 						</el-breadcrumb>
 					</el-col>
-					<el-col span=24 class="content-wrapper">
+					<el-col :span="24" class="content-wrapper">
 						<transition name="fade" mode="out-in">
 							<router-view></router-view>
 						</transition>

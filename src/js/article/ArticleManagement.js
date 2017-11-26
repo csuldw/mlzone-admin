@@ -1,6 +1,6 @@
 import util from '../../common/js/util'
 //import NProgress from 'nprogress'
-import {getArticleListByPage, removeUser, deleteArticleInfoById, batchRemoveUser, editUser, addUser, getArticleInfoListByPage, saveOrUpdateArticleInfo} from '../../api/api';
+import {getArticleListByPage, deleteArticleInfoById, getArticleCategoryListByParam, saveOrUpdateArticleInfo} from '../../api/api';
 import ElCol from "element-ui/packages/col/src/col";
 import ElRow from "element-ui/packages/row/src/row";
 
@@ -57,12 +57,20 @@ export default {
             }],
         }
     },
+    computed:{
+
+    },
     methods: {
         handleCurrentChange(val) {
             this.page = val;
             this.getArticleInfos();
         },
-
+        getArticleCategoryInfo(){
+            let para = {}
+            getArticleCategoryListByParam(para).then((res) => {
+                this.articleTypeList = res.data
+            });
+        },
         getArticleInfos() {
             let para = this.filters;
             console.log(para.pageNum)
@@ -144,7 +152,7 @@ export default {
                 id: 0,
                 title: '',
                 author: '',
-                categoryId: 0,
+                categoryId: 1,
                 publicDate: '',
                 postType: 0,
                 isPublish: 1
@@ -156,6 +164,7 @@ export default {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         this.addLoading = true;
                         this.dataForm = Object.assign({}, this.dataForm);
+
                         let para = this.dataForm;
                         saveOrUpdateArticleInfo(para).then((res) => {
                             this.addLoading = false;
@@ -181,5 +190,6 @@ export default {
     },
     mounted() {
         this.getArticleInfos();
+        this.getArticleCategoryInfo();
     }
 }
