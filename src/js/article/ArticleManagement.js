@@ -25,6 +25,7 @@ export default {
                 publicDate: '',
                 postType: '',
                 isPublish: 1,
+                filePath: '',
                 userEntity: { }
             },
             articleList: [],
@@ -138,11 +139,16 @@ export default {
             }
         },
         uploadSuccess (response, file, fileList) {
-            console.log('上传文件', response)
+            this.dataForm.filePath = response.filePath;
+            console.log('上传文件', response.filePath)
         },
         // 上传错误
         uploadError (response, file, fileList) {
             console.log('上传失败，请重试！', file.name)
+        },
+        clearUploaded(){
+            console.log("clear file!")
+            this.$refs.upload.clearFiles();
         },
 
         //显示新增界面

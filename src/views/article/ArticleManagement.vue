@@ -77,10 +77,9 @@
                          :onError="uploadError"
                          :data="uploadParams"
                          :limit=1
-                         ref="uploades"
-                         :before-upload="handleSendBefore"
-                         :show-upload-list="false">
-                <el-button size="small" type="primary">文件上传</el-button>
+                         ref="upload"
+                         :before-upload="handleSendBefore">
+                <el-button size="small" type="primary"  @click="clearUploaded">文件上传</el-button>
                 <span class="el-upFilload__tip" slot="tip" style="margin-left:10px;">请上传MD格式内容的文件.</span>
               </el-upload>
             </el-form-item>
@@ -135,10 +134,10 @@
                          :onError="uploadError"
                          :data="uploadParams"
                          :limit=1
-                         ref="uploadFiles"
+                         ref="upload"
                          :before-upload="handleSendBefore"
                          :show-upload-list="true">
-                <el-button size="small" type="primary" >文件上传</el-button>
+                <el-button size="small" type="primary" @click="clearUploaded" >文件上传</el-button>
                 <span class="el-upload__tip" slot="tip" style="margin-left:10px;">请上传MD格式内容的文件.</span>
               </el-upload>
             </el-form-item>
