@@ -11,7 +11,7 @@ let headers2 = {
 //     "Content-Type":"multipart/form-data"
     'content-type': 'application/json'
 };
-//
+
 var instance = axios.create({
     headers: headers
 });
@@ -25,7 +25,6 @@ var instance2 = axios.create({
 export const getArticleListByPage = params => { return instance.post(`/api/MLZone/articleInfo/getArticelInfoList.do`, qs.stringify(params)).then(res => res.data); };
 export const deleteArticleInfoById = params => { return instance.post(`/api/MLZone/articleInfo/deleteArticleInfoById.do`, qs.stringify(params)).then(res => res.data); };
 export const saveOrUpdateArticleInfo = params => { return instance2.post(`/api/MLZone/articleInfo/saveOrUpdateArticleInfo.do`, JSON.stringify(params)).then(res => res.data); };
-
 // export const saveOrUpdateArticleInfo = params => { return instance.post(`/api/MLZone/articleInfo/saveOrUpdateArticleInfo.do`, qs.stringify(params)).then(res => res.data); };
 
 // article-category-ref
@@ -44,15 +43,17 @@ export const getArticleCategoryListByParam = params => { return instance.post(`/
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
-export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
+// export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
+export const getUserListPage = params => { return instance.post(`/api/MLZone/user/getUserListByParam.do`, qs.stringify(params)).then(res => res.data); };
+// export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }); };
+export const saveOrUpdateUser = params => { return instance2.post(`/api/MLZone/user/saveOrUpdateUser.do`, JSON.stringify(params)).then(res => res.data); };
 
-export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
+//export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 
 export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };
 
 export const batchRemoveUser = params => { return axios.get(`${base}/user/batchremove`, { params: params }); };
 
-export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }); };
 
 export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }); };
 

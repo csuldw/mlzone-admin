@@ -45,7 +45,7 @@
 			</div>
 		</el-form-item>
 		<el-row>
-			<el-col :span="10">
+			<el-col span=10>
 				<el-form-item label="标签：" >
 					<el-input v-model="form.name"></el-input>
 				</el-form-item>
