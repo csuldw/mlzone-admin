@@ -31,11 +31,11 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '用户管理',
+        name: '用户模块',
         iconCls: 'fa fa-user-circle',//图标样式class
         children: [
             //{ path: '/main', component: Main, name: '主页', hidden: true },
-            { path: '/userManagement', component: UserManagement, name: '用户列表' },
+            { path: '/userManagement', component: UserManagement, name: '用户管理' },
             { path: '/userAnalysis', component: UserAnalysis, name: '用户分析', hidden: true },
             //{ path: '/user', component: User, name: '列表' , hidden: true},
         ]
@@ -43,11 +43,11 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '文章管理',
+        name: '文章模块',
         iconCls: 'fa fa-archive',
         children: [
-            {path: '/articlePublish', component: ArticlePublish, name: '发表文章'},
-            { path: '/articleManagement', component: ArticleManagement, name: '文章信息' },
+            // {path: '/articlePublish', component: ArticlePublish, name: '发表文章'},
+            { path: '/articleManagement', component: ArticleManagement, name: '文章管理' },
             { path: '/articleAnalysis', component: ArticleAnalysis, name: '文章分析' }
         ]
     },
