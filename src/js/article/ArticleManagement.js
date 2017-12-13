@@ -47,7 +47,7 @@ export default {
             uploadParams: {
             },
             articleTypeList: [{
-                value: 'typ1',
+                value: 'type1',
                 label: '机器学习'
             }, {
                 value: 'type2',
