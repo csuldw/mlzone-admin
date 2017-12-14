@@ -68,7 +68,7 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" align="right">
 			<!--<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>-->
-			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total">
+			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="filters.pageSize" :total="total">
 			</el-pagination>
 		</el-col>
 

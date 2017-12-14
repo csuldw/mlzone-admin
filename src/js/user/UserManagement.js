@@ -29,7 +29,7 @@ export default {
 		return {
             filters : {
                 pageNum: 1,
-                pageSize: 0,
+                pageSize: 10,
                 keywords: ''
             },
 			users: [],
@@ -88,7 +88,7 @@ export default {
 			return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 		},
 		handleCurrentChange(val) {
-			this.page = val;
+			this.filters.pageNum = val;
 			this.getUsers();
 		},
 		//获取用户列表

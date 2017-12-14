@@ -13,7 +13,7 @@ export default {
         return {
             filters : {
                 pageNum: 1,
-                pageSize: 0
+                pageSize: 10
             },
             //数据
             dataForm: {
@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         handleCurrentChange(val) {
-            this.page = val;
+            this.filters.pageSize = val;
             this.getArticleInfos();
         },
         getArticleCategoryInfo(){

@@ -1,6 +1,6 @@
 import util from '../../common/js/util'
 //import NProgress from 'nprogress'
-import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
+import { getCommentListPage, batchRemoveUser, editUser, addUser } from '../../api/api';
 import ElCol from "element-ui/packages/col/src/col";
 import ElRow from "element-ui/packages/row/src/row";
 
@@ -11,9 +11,11 @@ export default {
     data() {
         return {
             filters: {
-                name: ''
+                keywords: '',
+                pageNum: 1,
+                pageSize: 0
             },
-            users: [],
+            comments: [],
             total: 0,
             page: 1,
             listLoading: false,
@@ -23,23 +25,21 @@ export default {
     methods: {
         handleCurrentChange(val) {
             this.page = val;
-            this.getUsers();
+            this.getComments();
         },
-        //获取用户列表
-        getUsers() {
-            let para = {
-                page: this.page,
-                name: this.filters.name
-            };
+        //获取评论
+        getComments() {
+            let para = this.filters;
             this.listLoading = true;
             //NProgress.start();
-            getUserListPage(para).then((res) => {
+            getCommentListPage(para).then((res) => {
                 this.total = res.data.total;
-                this.users = res.data.users;
+                this.comments = res.data.list;
                 this.listLoading = false;
                 //NProgress.done();
             });
         },
+
         //删除
         handleDel: function (index, row) {
             this.$confirm('确认删除该记录吗?', '提示', {
@@ -48,14 +48,14 @@ export default {
                 this.listLoading = true;
                 //NProgress.start();
                 let para = { id: row.id };
-                removeUser(para).then((res) => {
+                removeComment(para).then((res) => {
                     this.listLoading = false;
                     //NProgress.done();
                     this.$message({
                         message: '删除成功',
                         type: 'success'
                     });
-                    this.getUsers();
+                    this.getComments();
                 });
             }).catch(() => {
 
@@ -67,6 +67,6 @@ export default {
         },
     },
     mounted() {
-        this.getUsers();
+        this.getComments();
     }
 }
