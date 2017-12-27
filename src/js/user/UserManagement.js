@@ -75,8 +75,7 @@ export default {
 				],
 				password: [
                     {required: true, message: '请输入密码',trigger: 'blur'},
-					{min: 6,max: 30,message: '长度在 6 到 30 个字符'},
-					{pattern: /^(\w){6,20}$/,message: '只能输入6-20个字母、数字、下划线' }
+					{min: 6,max: 32,message: '长度在 6 到 30 个字符'},
 				]
 			},
 		}
