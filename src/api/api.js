@@ -25,6 +25,7 @@ var instance2 = axios.create({
 export const getArticleListByPage = params => { return instance.post(`/api/MLZone/articleInfo/getArticelInfoList.do`, qs.stringify(params)).then(res => res.data); };
 export const deleteArticleInfoById = params => { return instance.post(`/api/MLZone/articleInfo/deleteArticleInfoById.do`, qs.stringify(params)).then(res => res.data); };
 export const saveOrUpdateArticleInfo = params => { return instance2.post(`/api/MLZone/articleInfo/saveOrUpdateArticleInfo.do`, JSON.stringify(params)).then(res => res.data); };
+export const deleteFile = params => { return instance.post(`/api/MLZone/file/deleteFile.do`, qs.stringify(params)).then(res => res.data); };
 // export const saveOrUpdateArticleInfo = params => { return instance.post(`/api/MLZone/articleInfo/saveOrUpdateArticleInfo.do`, qs.stringify(params)).then(res => res.data); };
 
 // article-category-ref

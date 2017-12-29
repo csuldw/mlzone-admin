@@ -73,14 +73,31 @@
             <el-form-item label="上传文章：">
               <el-upload class="upload-demo"
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
-                         :on-success="uploadSuccess"
+                         :on-success="uploadArticleFileSuccess"
                          :onError="uploadError"
                          :data="uploadParams"
                          :limit=1
                          ref="upload"
                          :before-upload="handleSendBefore">
                 <el-button size="small" type="primary"  @click="clearUploaded">文件上传</el-button>
-                <span class="el-upFilload__tip" slot="tip" style="margin-left:10px;">请上传MD格式内容的文件.</span>
+                <span class="el-upFilload__tip" slot="tip" style="margin-left:10px;">请上传格式内容的文件.</span>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row >
+          <el-col :span="18" align="left">
+            <el-form-item label="展示图片：">
+              <el-upload class="upload-demo"
+                         action="http://localhost:8080/MLZone/file/uploadFile.do"
+                         :on-success="uploadArticleCoverSuccess"
+                         :onError="uploadError"
+                         :data="uploadParams"
+                         :limit=1
+                         ref="upload"
+                         :before-upload="handleImgSendBefore">
+                <el-button size="small" type="primary"  @click="clearUploaded">图片上传</el-button>
+                <span class="el-upFilload__tip" slot="tip" style="margin-left:10px;">请上传图片格式内容的文件.</span>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -130,7 +147,7 @@
             <el-form-item label="上传文章：">
               <el-upload class="upload-demo"
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
-                         :on-success="uploadSuccess"
+                         :on-success="uploadArticleFileSuccess"
                          :onError="uploadError"
                          :data="uploadParams"
                          :limit=1
@@ -139,6 +156,23 @@
                          :show-upload-list="true">
                 <el-button size="small" type="primary" @click="clearUploaded" >文件上传</el-button>
                 <span class="el-upload__tip" slot="tip" style="margin-left:10px;">请上传MD格式内容的文件.</span>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row >
+          <el-col :span="18" align="left">
+            <el-form-item label="展示图片：">
+              <el-upload class="upload-demo"
+                         action="http://localhost:8080/MLZone/file/uploadFile.do"
+                         :on-success="uploadArticleCoverSuccess"
+                         :onError="uploadError"
+                         :data="uploadParams"
+                         :limit=1
+                         ref="upload"
+                         :before-upload="handleImgSendBefore">
+                <el-button size="small" type="primary"  @click="clearUploaded">图片上传</el-button>
+                <span class="el-upFilload__tip" slot="tip" style="margin-left:10px;">请上传图片格式内容的文件.</span>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -184,7 +218,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align: center">
-        <el-button type="primary" @click.native="saveOrUpdate" :loading="editLoading">&nbsp;提交发表&nbsp;</el-button>
+        <el-button type="primary" @click.native="saveOrUpdate" :loading="editLoading">&nbsp;保存修改&nbsp;</el-button>
         <el-button @click.native="editFormVisible = false"> &nbsp;取消操作&nbsp;</el-button>
       </div>
       <!--<div slot="footer" class="dialog-footer">-->
