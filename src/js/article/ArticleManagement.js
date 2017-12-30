@@ -29,6 +29,7 @@ export default {
                 imagePath: '',
                 userEntity: { }
             },
+            saveType : '',
             articleList: [],
             total: 0,
             page: 1,
@@ -63,8 +64,13 @@ export default {
 
     },
     methods: {
-        handleCurrentChange(val) {
+        handleSizeChange(val) {
             this.filters.pageSize = val;
+            this.handleCurrentChange(1);
+            this.getArticleInfos();
+        },
+        handleCurrentChange(val) {
+            this.filters.pageNum = val;
             this.getArticleInfos();
         },
         getArticleCategoryInfo(){
@@ -110,7 +116,6 @@ export default {
         handleEdit: function (index, row) {
             this.editFormVisible = true;
             this.dataForm = Object.assign({}, row);
-            this.clearUploaded()
         },
         handleImgSendBefore(file){
             if(this.dataForm.imagePath !== '' && this.dataForm.imagePath !== null ) {
@@ -167,11 +172,26 @@ export default {
         uploadError (response, file, fileList) {
             console.log('上传失败，请重试！', file.name)
         },
-        clearUploaded(){
-            console.log("clear file!")
-            this.$refs.upload.clearFiles();
+        clearUploadFileEdit(){
+            console.log("clear clearUploadFileEdit file!")
+            this.$refs.uploadFileEdit.clearFiles();
+            this.dataForm.filePath=''
         },
-
+        clearUploadImageEdit(){
+            console.log("clear clearUploadImageEdit file!")
+            this.$refs.uploadImageEdit.clearFiles();
+            this.dataForm.imagePath=''
+        },
+        clearUploadFileAdd(){
+            console.log("clear clearUploadFileAdd file!")
+            this.$refs.uploadFileAdd.clearFiles();
+            this.dataForm.filePath=''
+        },
+        clearUploadImageAdd(){
+            console.log("clear clearUploadImageAdd file!")
+            this.$refs.uploadImageAdd.clearFiles();
+            this.dataForm.imagePath=''
+        },
         //显示新增界面
         addArticle: function () {
             this.addFormVisible = true;
@@ -185,7 +205,7 @@ export default {
                 isPublish: 1
             };
         },
-        saveOrUpdate: function () {
+        saveOrUpdate: function (saveType) {
             this.$refs.dataForm.validate((valid) => {
                 if (valid) {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -202,6 +222,10 @@ export default {
                             this.$refs['dataForm'].resetFields();
                             this.addFormVisible = false;
                             this.editFormVisible = false;
+                            if(saveType === 'update') {
+                                this.clearUploadFileEdit();
+                                this.clearUploadImageEdit();
+                            }
                             this.getArticleInfos();
                         }).catch(function (error) {
                             console.log(error);
@@ -210,9 +234,16 @@ export default {
                 }
             });
         },
-
         selsChange: function (sels) {
             this.sels = sels;
+        },
+        cancelEdit : function () {
+            this.editFormVisible = false;
+            this.clearUploadFileEdit();
+            this.clearUploadImageEdit();
+        },
+        cancelAdd : function () {
+            this.addFormVisible = false;
         },
     },
     mounted() {
