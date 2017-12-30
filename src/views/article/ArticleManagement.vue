@@ -75,7 +75,7 @@
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
                          :on-success="uploadArticleFileSuccess"
                          :onError="uploadError"
-                         :data="uploadParams"
+                         :data="uploadArticleParams"
                          :limit=1
                          ref="uploadFileAdd"
                          :before-upload="handleSendBefore">
@@ -92,7 +92,7 @@
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
                          :on-success="uploadArticleCoverSuccess"
                          :onError="uploadError"
-                         :data="uploadParams"
+                         :data="uploadImageParams"
                          :limit=1
                          ref="uploadImageAdd"
                          :before-upload="handleImgSendBefore">
@@ -149,7 +149,7 @@
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
                          :on-success="uploadArticleFileSuccess"
                          :onError="uploadError"
-                         :data="uploadParams"
+                         :data="uploadArticleParams"
                          :limit=1
                          ref="uploadFileEdit"
                          :before-upload="handleSendBefore"
@@ -167,7 +167,7 @@
                          action="http://localhost:8080/MLZone/file/uploadFile.do"
                          :on-success="uploadArticleCoverSuccess"
                          :onError="uploadError"
-                         :data="uploadParams"
+                         :data="uploadImageParams"
                          :limit=1
                          ref="uploadImageEdit"
                          :before-upload="handleImgSendBefore">

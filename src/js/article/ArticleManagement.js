@@ -9,9 +9,9 @@ export default {
         ElRow,
         ElCol
     },
-    data() {
+    data: function () {
         return {
-            filters : {
+            filters: {
                 pageNum: 1,
                 pageSize: 10
             },
@@ -27,26 +27,30 @@ export default {
                 isPublish: 1,
                 filePath: '',
                 imagePath: '',
-                userEntity: { }
+                userEntity: {}
             },
-            saveType : '',
+            saveType: '',
             articleList: [],
             total: 0,
             page: 1,
             listLoading: false,
             sels: [],//列表选中列
             postType: '原创',
-            articleType:'深度学习',
+            articleType: '深度学习',
             editFormVisible: false,//编辑界面是否显示
             editLoading: false,
             addFormVisible: false,//新增界面是否显示
             addLoading: false,
             dataFormRules: {
                 title: [
-                    { required: true, message: '请输入文章标题', trigger: 'blur' }
+                    {required: true, message: '请输入文章标题', trigger: 'blur'}
                 ]
             },
-            uploadParams: {
+            uploadImageParams: {
+                uploadType: "images"
+            },
+            uploadArticleParams: {
+                uploadType: "article"
             },
             articleTypeList: [{
                 value: 'type1',
