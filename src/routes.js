@@ -10,6 +10,9 @@ import ArticleManagement from './views/article/ArticleManagement.vue'
 import ArticleAnalysis from './views/article/ArticleAnalysis.vue'
 import CommentManagement from './views/comment/CommentManagement.vue'
 import CommentAnalysis from './views/comment/CommentAnalysis.vue'
+import ResourceManagement from './views/webResource/ResourceManagement.vue'
+import ResourceAnalysis from './views/webResource/ResourceAnalysis.vue'
+import AddSource from './views/webResource/AddSource.vue'
 import RecommendationManagement from './views/recommendation/RecommendationManagement.vue'
 import RecommendationAnalysis from './views/recommendation/RecommendationAnalysis.vue'
 import DataAnalysis from './views/dataAnalysis/dataAnalysis.vue'
@@ -49,6 +52,16 @@ let routes = [
             // {path: '/articlePublish', component: ArticlePublish, name: '发表文章'},
             { path: '/articleManagement', component: ArticleManagement, name: '文章管理' },
             { path: '/articleAnalysis', component: ArticleAnalysis, name: '文章分析' }
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '资源模块',
+        iconCls: 'fa fa-cloud-upload',
+        children: [
+            { path: '/addSource', component: AddSource,  name: '新增资源' },
+            { path: '/resourceManagement', component: ResourceManagement,  name: '资源管理' },
         ]
     },
     {
