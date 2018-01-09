@@ -15,6 +15,9 @@ export default {
                 pageNum: 1,
                 pageSize: 10
             },
+            dynamicTags: [],
+            inputVisible: false,
+            inputValue: '',
             //数据
             dataForm: {
                 id: 0,
@@ -27,7 +30,8 @@ export default {
                 isPublish: 1,
                 filePath: '',
                 imagePath: '',
-                userEntity: {}
+                userEntity: {},
+                tags:''
             },
             saveType: '',
             articleList: [],
@@ -215,7 +219,7 @@ export default {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         this.addLoading = true;
                         this.dataForm = Object.assign({}, this.dataForm);
-
+                        this.dataForm.tags = this.dynamicTags.join("|")
                         let para = this.dataForm;
                         saveOrUpdateArticleInfo(para).then((res) => {
                             this.addLoading = false;
@@ -230,6 +234,7 @@ export default {
                                 this.clearUploadFileEdit();
                                 this.clearUploadImageEdit();
                             }
+                            this.dynamicTags = [];
                             this.getArticleInfos();
                         }).catch(function (error) {
                             console.log(error);
@@ -245,10 +250,40 @@ export default {
             this.editFormVisible = false;
             this.clearUploadFileEdit();
             this.clearUploadImageEdit();
+            this.dynamicTags = []
         },
         cancelAdd : function () {
             this.addFormVisible = false;
         },
+
+        handleClose(tag) {
+            this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+            this.dataForm.tags = this.dynamicTags.join("|")
+        },
+
+        showInput() {
+            this.inputVisible = true;
+            this.$nextTick(_ => {
+                this.$refs.saveTagInput.$refs.input.focus();
+            });
+        },
+
+        handleInputConfirm() {
+            let inputValue = this.inputValue;
+            if (inputValue) {
+                this.dynamicTags.push(inputValue);
+                this.dataForm.tags = this.dynamicTags.join("|")
+            }
+            this.inputVisible = false;
+            this.inputValue = '';
+        },
+        splitTags(tags){
+            if(tags !== null && tags !== ''){
+                this.dynamicTags = tags.split("|");
+                return tags.split("|");
+            }
+            return [];
+        }
     },
     mounted() {
         this.getArticleInfos();
