@@ -179,8 +179,26 @@
         </el-row>
         <el-row >
           <el-col :span="22">
-            <el-form-item label="关键字：">
-              <el-input  v-model="dataForm.keywords" auto-complete="off" >111</el-input>
+            <el-form-item label="标签：">
+            <el-tag
+                    :key="tag"
+                    v-for="tag in splitTags(dataForm.tags)"
+                    closable
+                    :disable-transitions="false"
+                    @close="handleClose(tag)">
+                    {{tag}}
+            </el-tag>
+            <el-input
+                    class="input-new-tag"
+                    v-if="inputVisible"
+                    v-model="inputValue"
+                    ref="saveTagInput"
+                    size="small"
+                    @keyup.enter.native="handleInputConfirm"
+                    @blur="handleInputConfirm"
+            >
+            </el-input>
+            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -245,5 +263,20 @@
     margin-top:-30px;
     padding-bottom: 10px;
     text-align: center;
+  }
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
   }
 </style>
