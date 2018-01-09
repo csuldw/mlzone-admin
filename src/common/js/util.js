@@ -18,8 +18,6 @@ export default {
         return context == null || context == "" || context == "undefined" ? "" : context;
     },
     formatDate: {
-
-
         format: function (date, pattern) {
             pattern = pattern || DEFAULT_PATTERN;
             return pattern.replace(SIGN_REGEXP, function ($0) {
@@ -56,6 +54,10 @@ export default {
             return null;
         }
 
+    },
+    isValidPhone(str) {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        return reg.test(str)
     }
 
 };
