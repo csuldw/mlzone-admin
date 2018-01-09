@@ -151,7 +151,7 @@
 				</el-row>
 				<el-row >
 					<el-col :span="11">
-						<el-form-item label="电话：" prop="phone">
+						<el-form-item label="电话：" prop="phoneNumber">
 							<el-input  v-model="dataForm.phoneNumber" auto-complete="off" >111</el-input>
 						</el-form-item>
 					</el-col>
