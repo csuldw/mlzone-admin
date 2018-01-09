@@ -25,7 +25,17 @@ export default {
 					callback(new Error('服务异常'))
 				})
 			}
-        }
+        };
+        let validPhone = (rule, value,callback)=>{
+        	console.log(value)
+            if (!value){
+                callback(new Error('请输入电话号码'))
+            }else  if (!util.isValidPhone(value)){
+                callback(new Error('请输入正确的11位手机号码'))
+            }else {
+                callback()
+            }
+        };
 		return {
             filters : {
                 pageNum: 1,
@@ -76,7 +86,13 @@ export default {
 				password: [
                     {required: true, message: '请输入密码',trigger: 'blur'},
 					{min: 6,max: 32,message: '长度在 6 到 30 个字符'},
-				]
+				],
+                phoneNumber : [
+                    { required: true, trigger: 'blur', validator: validPhone }
+				],
+                email: [
+                    { type: 'email', message: '请输入正确的邮箱', trigger: 'blur'}
+                ],
 			},
 		}
 
@@ -177,7 +193,6 @@ export default {
 		selsChange: function (sels) {
 			this.sels = sels;
 		},
-
 	},
 	mounted() {
 		this.getUsers();
