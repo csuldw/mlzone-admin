@@ -210,7 +210,8 @@ export default {
                 categoryId: 1,
                 publicDate: '',
                 postType: 0,
-                isPublish: 1
+                isPublish: 1,
+                tags:''
             };
         },
         saveOrUpdate: function (saveType) {
