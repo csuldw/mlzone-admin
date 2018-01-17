@@ -18,7 +18,7 @@
 			<el-table-column type="index" width="60"></el-table-column>
 			<el-table-column prop="userEntityFrom.username" label="评论人" width="150" sortable></el-table-column>
 			<el-table-column prop="userEntityTo.username" label="被评论人" width="150" sortable></el-table-column>
-			<el-table-column prop="content" label="评论内容" width="400" sortable></el-table-column>
+			<el-table-column prop="content" label="评论内容" min-width="400" sortable></el-table-column>
 			<el-table-column prop="sendDate" label="发表日期" width="310" sortable></el-table-column>
 			<el-table-column label="操作" width="150">
 				<template slot-scope="scope">
