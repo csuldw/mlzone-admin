@@ -17,7 +17,7 @@
 			<!--<el-table-column type="selection" width="55"></el-table-column>-->
 			<el-table-column type="index" width="60"></el-table-column>
 			<el-table-column prop="name" label="资源名称" width="150" sortable></el-table-column>
-			<el-table-column prop="url" label="资源链接" width="350" sortable></el-table-column>
+			<el-table-column prop="url" label="资源链接" min-width="350" sortable></el-table-column>
 			<el-table-column prop="author" label="作者" width="200" sortable></el-table-column>
 			<el-table-column prop="sourceType" label="资源类型" width="310" sortable></el-table-column>
 			<el-table-column label="操作" width="150">
